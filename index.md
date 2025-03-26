@@ -4,4 +4,4 @@ Final Project for 15-418/15-618: Parallel Computer Architecture and Programming,
 Team members: Ziruo Xiao (ziruox), Rong Mu (rongmu)
 
 ---
-[Project Proposal](https://rr-15618-s25.github.io/proposal)
+[Project Proposal](https://rr-15618-s25.github.io/project-website/proposal)
