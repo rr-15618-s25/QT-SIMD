@@ -7,7 +7,7 @@ Team Member: Rong Mu (rongmu), Ziruo Xiao (ziruox)
 This project proposes to develop SIMD-parallel techniques for accelerating the querying of Point-Range quadtree. The primary goal is to enable batch processing of multiple nodes in a query simultaneously, by exploiting SIMD-friendly traversal logic and memory optimization techniques. We also hope to explore the parallelism across queries and compare the parallelism performance of different spatial indexing tree structures.
 
 ### Background
-The quadtree is a widely used hierarchical data structure for managing spatial data1. It is commonly applied in spatial databases for spatial partitioning and query processing, and other scenarios like physics simulation. By recursively subdividing space into four quadrants, quadtrees provide a compact and locality-aware representation of spatial datasets. As spatial datasets continue to grow in both size and resolution, the need to accelerate spatial query processing has become increasingly critical. Operations such as range query searches and nearest neighbors search are fundamental to many applications, but high memory bandwidth and computation complexity are common bottlenecks.
+The quadtree is a widely used hierarchical data structure for managing spatial data[1]. It is commonly applied in spatial databases for spatial partitioning and query processing, and other scenarios like physics simulation. By recursively subdividing space into four quadrants, quadtrees provide a compact and locality-aware representation of spatial datasets. As spatial datasets continue to grow in both size and resolution, the need to accelerate spatial query processing has become increasingly critical. Operations such as range query searches and nearest neighbors search are fundamental to many applications, but high memory bandwidth and computation complexity are common bottlenecks[2].
 
 <div style="text-align: center;">
     <img src="imgs/usmap.png" alt="Quadtree-USMap" style="display:inline; width:300px;"/> 
@@ -16,7 +16,7 @@ The quadtree is a widely used hierarchical data structure for managing spatial d
 
 <p style="text-align: center;">Figure 1: left: an example of quadtree architecture; right: an example of quadtree built on the US map for geospatial database querying.</p>
 
-The hierarchical structure of quadtree allows query search to efficiently eliminate large irrelevant regions early, but its conventional implementations do not fully exploit the data-level and task-level parallelism in modern hardware, such as SIMD and multithreading, so accelerating the quadtree query processing is an important and interesting topic to explore.
+The hierarchical structure of quadtree allows query search to efficiently eliminate large irrelevant regions early, but its conventional implementations do not fully exploit the data-level and task-level parallelism in modern hardware, such as SIMD and multithreading[3], so accelerating the quadtree query processing is an important and interesting topic to explore.
 
 In this project, we are going to focus on optimizing the range querying in the Point-Range quadtree (PR quadtree). The PR quadtree is a versatile spatial data structure capable of representing both point and region-based spatial data, making it well-suited for diverse applications. Range querying is a critical operation on PR quadtrees, retrieving all spatial objects intersecting a given region, which serve as a basis for various spatial querying. To the best of our knowledge, this is the first work for SIMD Quadtree query processing and optimization.
 
@@ -94,7 +94,7 @@ We think this is adequate for our experiments for at least the Plan To Achieve g
 | Week 5 (4.23-4.29)   | - Depending on the progress, optionally try the hope to achieve tasks <br> - Wrap up the project, prepare final report and presentation |
 
 ### Reference
-1. Samet, H. "The quadtree and related hierarchical data structures." ACM Computing Surveys (1984)
+1. Samet, H. "The quadtree and related hierarchical data structures." ACM Computing Surveys (1984
 2. Gaede, V., & Günther, O. "Multidimensional access methods." ACM Computing Surveys (1998)
 3. Kim, J., Kim, Y., & Kim, S. "SIMD-ified R-tree Query Processing and Optimization."   arXiv:2309.16913, 2023.
 
