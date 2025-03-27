@@ -7,7 +7,27 @@ Team Member: Rong Mu (rongmu), Ziruo Xiao (ziruox)
 This project proposes to develop SIMD-parallel techniques for accelerating the querying of Point-Range quadtree. The primary goal is to enable batch processing of multiple nodes in a query simultaneously, by exploiting SIMD-friendly traversal logic and memory optimization techniques. We also hope to explore the parallelism across queries and compare the parallelism performance of different spatial indexing tree structures.
 
 ### Background
+The quadtree is a widely used hierarchical data structure for managing spatial data1. It is commonly applied in spatial databases for spatial partitioning and query processing, and other scenarios like physics simulation. By recursively subdividing space into four quadrants, quadtrees provide a compact and locality-aware representation of spatial datasets. As spatial datasets continue to grow in both size and resolution, the need to accelerate spatial query processing has become increasingly critical. Operations such as range query searches and nearest neighbors search are fundamental to many applications, but high memory bandwidth and computation complexity are common bottlenecks.
 
+<div style="text-align: center;">
+    <img src="imgs/usmap.png" alt="Quadtree-USMap" style="display:inline; width:300px;"/> 
+    <img src="imgs/quadtree.png" alt="Quadtree-eg" style="display:inline; width:300px;"/>
+</div>
+
+<p style="text-align: center;">Figure 1: left: an example of quadtree architecture; right: an example of quadtree built on the US map for geospatial database querying.</p>
+
+The hierarchical structure of quadtree allows query search to efficiently eliminate large irrelevant regions early, but its conventional implementations do not fully exploit the data-level and task-level parallelism in modern hardware, such as SIMD and multithreading, so accelerating the quadtree query processing is an important and interesting topic to explore.
+
+In this project, we are going to focus on optimizing the range querying in the Point-Range quadtree (PR quadtree). The PR quadtree is a versatile spatial data structure capable of representing both point and region-based spatial data, making it well-suited for diverse applications. Range querying is a critical operation on PR quadtrees, retrieving all spatial objects intersecting a given region, which serve as a basis for various spatial querying. To the best of our knowledge, this is the first work for SIMD Quadtree query processing and optimization.
+
+#### Potential Idea and Approach
+Our primary implementation plans to involve within-query parallelism by leveraging SIMD vectorization. Specifically, during each query traversal, we will use SIMD to perform range checking of a batch of regions of subtrees in parallel. This process continues recursively, enabling efficient pruning of irrelevant regions at each level of the quadtree to accelerate the node filtering and search the query more efficiently. 
+
+We will explore SIMD-friendly traversal logic, such as BFS-like and DFS-like approaches. DFS processing of PR quadtree nodes sequentially introduces branching and irregular memory access, hindering SIMD parallelization. Conversely, BFS enables batch processing of child nodes for SIMD but incurs queue management overhead. We will explore BFS-DFS hybrid and other searching approaches (e.g., Best-first search) to reduce overhead, using BFS with SIMD in the upper levels of the tree when batch parallelism is effective and using DFS in deeper levels where lightweight traversal is more efficient.
+
+We will also explore SIMD-friendly memory tricks. First, we can optimize the tree storage structure by storing node bounding boxes and point coordinates using a Structure of Array layout to improve the cache locality and minimize the scatter/gather overhead. Second, we can apply a memory compression method to reduce memory bandwidth and load more points per SIMD register. Besides, we will plan to study prefetching techniques to explore the way to predict and prefetch bounding boxes and child nodes of next-level nodes to reduce cache misses.
+
+With the above tasks smoothly done, we also hope to explore SIMD/multi-thread parallel (Vectorization) across query to achieve further acceleration.
 
 ### The Challenge
 The nature of the PR quadtree provides space for SIMD utilization, but the inherent complexity and irregularity of the PR quadtree data structure can make it difficult to efficiently parallelize and optimize for SIMD processing. The main challenges include:
@@ -27,11 +47,11 @@ Compute resource (details given in platform choice session): We need SIMD and sy
 
 **Related works:**
 
-SIMD-ified R-tree Query Processing and Optimization:
-https://dl.acm.org/doi/pdf/10.1145/3589132.3625610
+[SIMD-ified R-tree Query Processing and Optimization](
+https://dl.acm.org/doi/pdf/10.1145/3589132.3625610)
 
-Parallel Quadtree Coding of Large-Scale Raster Geospatial Data on GPGPUs:
-https://dl.acm.org/doi/pdf/10.1145/2093973.2094047
+[Parallel Quadtree Coding of Large-Scale Raster Geospatial Data on GPGPUs]
+(https://dl.acm.org/doi/pdf/10.1145/2093973.2094047)
 
 ### GOALS AND DELIVERABLES
 
@@ -50,7 +70,7 @@ Given the nature that PR quadtree has 4 child nodes per non-leaf node, we hope t
 **Hope To Achieve:**
 - Conduct experiments on real-world dataset (likely need to construct first)
 - SIMD/multi-thread parallel (Vectorization) across query
-- A speedup and system profiling comparison with other tree structure SIMD (e.g., R-tree https://dl.acm.org/doi/pdf/10.1145/3589132.3625610).
+- A speedup and system profiling comparison with other tree structure SIMD (e.g., [R-tree](https://dl.acm.org/doi/pdf/10.1145/3589132.3625610)).
 
 ### PLATFORM CHOICE
 
@@ -65,13 +85,13 @@ We think this is adequate for our experiments for at least the Plan To Achieve g
 
 ### SCHEDULE
 
-| Time | TODOs |
-|----------|--------------------|
-|  Week 1 (3.26-4.1) p.s. Midterm 2 on 4.2 |  Value C |
-|  Week 2 (4.2-4.8) |   Value F |
-|  Week 3 (4.9-4.15) p.s. Milestone report on 4.15 | |
-|  Week 4 (4.16-4.22) | |
-|  Week 5 (4.23-4.29) | |
+| Time                  | TODOs                                                                                                  |
+|-----------------------|--------------------------------------------------------------------------------------------------------|
+| Week 1 (3.26-4.1) <br> p.s. Midterm 2 on 4.2   | - Conduct a comprehensive literature review on related work (quadtree optimization, related SIMD techniques) <br> - Try out the starter code |
+| Week 2 (4.2-4.8)     | - Build dataset from generation code <br> - Implement naive SIMD across-node parallelism, conduct basic experiments and profiling |
+| Week 3 (4.9-4.15) <br> p.s. Milestone report on 4.15    | - Exploit different SIMD algorithms, with corresponding suitable traversal logic, conduct basic experiments and profiling <br> - Record milestone results in the report |
+| Week 4 (4.16-4.22)   | - Exploit memory-related techniques, including storage order, tree compression/linearize, prefetching <br> - Conduct thorough experiments and profiling |
+| Week 5 (4.23-4.29)   | - Depending on the progress, optionally try the hope to achieve tasks <br> - Wrap up the project, prepare final report and presentation |
 
 
 
