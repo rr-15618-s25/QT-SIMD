@@ -1,4 +1,4 @@
-# Optimizing Quadtree Queries with SIMD
+# Exploiting SIMD in Quadtree Querying
 Final Project for 15-418/15-618: Parallel Computer Architecture and Programming, Spring 2025
 
 Team members: Ziruo Xiao (ziruox), Rong Mu (rongmu)
