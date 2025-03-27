@@ -93,6 +93,12 @@ We think this is adequate for our experiments for at least the Plan To Achieve g
 | Week 4 (4.16-4.22)   | - Exploit memory-related techniques, including storage order, tree compression/linearize, prefetching <br> - Conduct thorough experiments and profiling |
 | Week 5 (4.23-4.29)   | - Depending on the progress, optionally try the hope to achieve tasks <br> - Wrap up the project, prepare final report and presentation |
 
+### Reference
+1. Samet, H. "The quadtree and related hierarchical data structures." ACM Computing Surveys (1984)
+2. Gaede, V., & Günther, O. "Multidimensional access methods." ACM Computing Surveys (1998)
+3. Kim, J., Kim, Y., & Kim, S. "SIMD-ified R-tree Query Processing and Optimization."   arXiv:2309.16913, 2023.
+
+
 
 
 
